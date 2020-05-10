@@ -1,3 +1,12 @@
+-- phpMyAdmin SQL Dump
+-- version 5.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Czas generowania: 11 Maj 2020, 00:22
+-- Wersja serwera: 10.4.11-MariaDB
+-- Wersja PHP: 7.4.3
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
@@ -83,14 +92,14 @@ CREATE TABLE `liga` (
   `data_zalozenia` date NOT NULL,
   `panstwo` varchar(50) DEFAULT NULL,
   `liczba_druzyn` int(11) DEFAULT NULL,
-  `id_klub` int(11) DEFAULT NULL
+  `id_klub_wygrany` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Zrzut danych tabeli `liga`
 --
 
-INSERT INTO `liga` (`id_liga`, `szczebel_rozgrywkowy`, `data_zalozenia`, `panstwo`, `liczba_druzyn`, `id_klub`) VALUES
+INSERT INTO `liga` (`id_liga`, `szczebel_rozgrywkowy`, `data_zalozenia`, `panstwo`, `liczba_druzyn`, `id_klub_wygrany`) VALUES
 (1, 'Ekstraklasa', '1926-12-05', 'Polska', 16, 1),
 (2, 'Seria A', '1929-10-02', 'Wlochy', 20, 2),
 (3, 'Premier League', '1992-02-20', 'Anglia', 20, 4),
@@ -246,7 +255,7 @@ ALTER TABLE `klub`
 --
 ALTER TABLE `liga`
   ADD PRIMARY KEY (`id_liga`),
-  ADD KEY `liga_klub_fk` (`id_klub`);
+  ADD KEY `liga_klub_fk` (`id_klub_wygrany`);
 
 --
 -- Indeksy dla tabeli `rozgrywka`
@@ -280,7 +289,7 @@ ALTER TABLE `zawodnik`
 -- Ograniczenia dla tabeli `liga`
 --
 ALTER TABLE `liga`
-  ADD CONSTRAINT `liga_klub_fk` FOREIGN KEY (`id_klub`) REFERENCES `klub` (`id_klub`);
+  ADD CONSTRAINT `liga_klub_fk` FOREIGN KEY (`id_klub_wygrany`) REFERENCES `klub` (`id_klub`);
 
 --
 -- Ograniczenia dla tabeli `rozgrywka`
