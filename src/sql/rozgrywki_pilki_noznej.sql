@@ -2,10 +2,10 @@
 -- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Czas generowania: 11 Maj 2020, 00:22
+-- Host: localhost
+-- Czas generowania: 11 Maj 2020, 15:39
 -- Wersja serwera: 10.4.11-MariaDB
--- Wersja PHP: 7.4.3
+-- Wersja PHP: 7.4.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -78,7 +78,15 @@ INSERT INTO `klub` (`id_klub`, `nazwa_klubu`, `siedziba`, `trener_klubu`, `data_
 (34, 'Atletico Madryt', 'Madryt', 'Diego Simeone', 1903, 'Hiszpania'),
 (35, 'Manchester City F.C.', 'Manchester', 'Pep Guardiola', 1880, 'Wielka Brytania'),
 (36, 'RB Leipzig', 'Lipsk', 'Julian Nagelsmann', 2009, 'Niemcy'),
-(37, 'Real Sociedad', 'San Sebastian', 'Imanol Alguacil', 1909, 'Hiszpania');
+(37, 'Real Sociedad', 'San Sebastian', 'Imanol Alguacil', 1909, 'Hiszpania'),
+(38, 'Everton F.C', 'Liverpool', 'Carlo Ancelotti', 1878, 'Wielka Brytania'),
+(39, 'Stoke City F.C.', 'Stoke-on-Trent', 'Michael O’Neill', 1863, 'Wielka Brytania'),
+(40, 'Burnley F.C.', 'Burnley', 'Sean Dyche', 1882, 'Wielka Brytania'),
+(41, 'Liverpool F.C.', 'Liverpool', 'Lijnders', 1894, 'Wielka Brytania'),
+(42, 'Tottenham Hotspur F.C.', 'Tottenham', 'José Mourinho', 1882, 'Wielka Brytania'),
+(43, 'Leicester City F.C.', 'Leicester', 'Brendan Rodgers', 1884, 'Wielka Brytania'),
+(44, 'West Ham United F.C.', 'Londyn', 'David Moyes', 1895, 'Wielka Brytania'),
+(45, 'A.F.C. Bournemouth', 'Bournemouth', 'Eddie Howe', 1899, 'Wielka Brytania');
 
 -- --------------------------------------------------------
 
@@ -238,7 +246,30 @@ INSERT INTO `zawodnik` (`id_zawodnik`, `imie_zawodnika`, `nazwisko_zawodnika`, `
 (48, 'Alvaro', 'Morata', 'napastnik', 'Hiszpania', 27, 34, 84),
 (49, 'Paco', 'Alcacer', 'napastnik', 'Hiszpania', 26, 28, 72),
 (50, 'Mikel', 'Oyarzabal', 'napastnik', 'Hiszpania', 23, 37, 78),
-(51, 'Gerard', 'Moreno', 'napastnik', 'Hiszpania', 28, 28, 75);
+(51, 'Gerard', 'Moreno', 'napastnik', 'Hiszpania', 28, 28, 75),
+(52, 'Jordan', 'Pickford', 'bramkarz', 'Anglia', 26, 38, 77),
+(53, 'Jack', 'Butland', 'bramkarz', 'Anglia', 27, 39, 94),
+(54, 'Tom', 'Heaton', 'bramkarz', 'Anglia', 34, 40, 85),
+(55, 'Kyle', 'Walker', 'obronca', 'Anglia', 30, 35, 83),
+(56, 'Danny', 'Rose', 'obronca', 'Anglia', 30, 42, 76),
+(57, 'John', 'Stones', 'obronca', 'Anglia', 26, 35, 70),
+(58, 'Harry', 'Maguire', 'obronca', 'Anglia', 27, 24, 100),
+(59, 'Joe', 'Gomez', 'obronca', 'Anglia', 23, 41, 77),
+(60, 'Ben', 'Chilwell', 'obronca', 'Anglia', 24, 43, 77),
+(61, 'Michael', 'Keane', 'obronca', 'Anglia', 27, 38, 82),
+(62, 'John', 'Alexander-Arnold', 'obronca', 'Anglia', 22, 41, 69),
+(63, 'Eric', 'Dier', 'pomocnik', 'Anglia', 26, 42, 90),
+(64, 'Jesse', 'Lingard', 'pomocnik', 'Anglia', 28, 24, 65),
+(65, 'Jordan', 'Henderson', 'pomocnik', 'Anglia', 30, 41, 80),
+(66, 'Declan', 'Rice', 'pomocnik', 'Anglia', 21, 44, 80),
+(67, 'Fabian', 'Delph', 'pomocnik', 'Anglia', 31, 38, 60),
+(68, 'Ross', 'Barkley', 'pomocnik', 'Anglia', 27, 25, 87),
+(69, 'Dele', 'Alli', 'pomocnik', 'Anglia', 24, 42, 80),
+(70, 'Harry', 'Kane', 'napastnik', 'Anglia', 27, 42, 86),
+(71, 'Raheem', 'Starlin', 'napastnik', 'Anglia', 26, 35, 69),
+(72, 'Jadon', 'Sancho', 'napastnik', 'Anglia', 20, 5, 76),
+(73, 'Marcus', 'Rashford', 'napastnik', 'Anglia', 23, 24, 70),
+(74, 'Callum', 'Wilson', 'napastnik', 'Anglia', 28, 45, 66);
 
 --
 -- Indeksy dla zrzutów tabel
