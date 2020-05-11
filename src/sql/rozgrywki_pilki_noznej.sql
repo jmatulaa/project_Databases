@@ -86,7 +86,11 @@ INSERT INTO `klub` (`id_klub`, `nazwa_klubu`, `siedziba`, `trener_klubu`, `data_
 (42, 'Tottenham Hotspur F.C.', 'Tottenham', 'José Mourinho', 1882, 'Wielka Brytania'),
 (43, 'Leicester City F.C.', 'Leicester', 'Brendan Rodgers', 1884, 'Wielka Brytania'),
 (44, 'West Ham United F.C.', 'Londyn', 'David Moyes', 1895, 'Wielka Brytania'),
-(45, 'A.F.C. Bournemouth', 'Bournemouth', 'Eddie Howe', 1899, 'Wielka Brytania');
+(45, 'A.F.C. Bournemouth', 'Bournemouth', 'Eddie Howe', 1899, 'Wielka Brytania'),
+(46, 'FC Koln', 'Koln', 'Markus Gisdol', 1948, 'Niemcy'),
+(47, 'Borussia Monchengladbach', 'Monchengladbach', 'Marco Rose', 1966, 'Niemcy'),
+(48, 'Bayer 04 Leverkusen', 'Leverkusen', 'Peter Bosz', 1979, 'Niemcy'),
+(49, 'Hertha BSC', 'Berlin', 'Bruno Labbadia', 1892, 'Niemcy');
 
 -- --------------------------------------------------------
 
@@ -269,7 +273,29 @@ INSERT INTO `zawodnik` (`id_zawodnik`, `imie_zawodnika`, `nazwisko_zawodnika`, `
 (71, 'Raheem', 'Starlin', 'napastnik', 'Anglia', 26, 35, 69),
 (72, 'Jadon', 'Sancho', 'napastnik', 'Anglia', 20, 5, 76),
 (73, 'Marcus', 'Rashford', 'napastnik', 'Anglia', 23, 24, 70),
-(74, 'Callum', 'Wilson', 'napastnik', 'Anglia', 28, 45, 66);
+(74, 'Callum', 'Wilson', 'napastnik', 'Anglia', 28, 45, 66),
+(75, 'Manuel', 'Neuer', 'bramkarz', 'Niemcy', 34, 12, 92),
+(76, 'Kevin', 'Trapp', 'bramkarz', 'Niemcy', 29, 30, 88),
+(77, 'Sven', 'Ulreich', 'bramkarz', 'Niemcy', 31, 12, 84),
+(78, 'Thilo', 'Kehrer', 'obronca', 'Niemcy', 23, 30, 76),
+(79, 'Jonas', 'Hector', 'obronca', 'Niemcy', 29, 46, 75),
+(80, 'Matthias', 'Ginter', 'obronca', 'Niemcy', 26, 47, 85),
+(81, 'Jonathan', 'Tah', 'obronca', 'Niemcy', 24, 48, 97),
+(82, 'Marcel', 'Halstenberg', 'obronca', 'Niemcy', 28, 36, 82),
+(83, 'Nico', 'Schulz', 'obronca', 'Niemcy', 27, 30, 78),
+(84, 'Niklas', 'Sule', 'obronca', 'Niemcy', 24, 12, 97),
+(85, 'Lukas', 'Klostermann', 'obronca', 'Niemcy', 23, 36, 83),
+(86, 'Niklas', 'Stark', 'obronca', 'Niemcy', 25, 49, 88),
+(87, 'Joshua', 'Kimmich', 'pomocnik', 'Niemcy', 25, 12, 72),
+(88, 'Julian', 'Draxler', 'pomocnik', 'Niemcy', 72, 30, 26),
+(89, 'Marco', 'Reus', 'pomocnik', 'Niemcy', 30, 5, 71),
+(90, 'Leon', 'Goretzka', 'pomocnik', 'Niemcy', 25, 12, 76),
+(91, 'Ilkay', 'Gundogan', 'pomocnik', 'Niemcy', 29, 35, 80),
+(92, 'Kai', 'Havertz', 'pomocnik', 'Niemcy', 20, 48, 82),
+(93, 'Timo', 'Werner', 'napastnik', 'Niemcy', 24, 36, 75),
+(94, 'Julian', 'Brandt', 'napastnik', 'Niemcy', 24, 5, 83),
+(95, 'Leroy', 'Sané', 'napastnik', 'Niemcy', 24, 35, 75),
+(96, 'Serge', 'Gnabry', 'napastnik', 'Niemcy', 24, 12, 75);
 
 --
 -- Indeksy dla zrzutów tabel
