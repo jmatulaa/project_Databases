@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Czas generowania: 12 Maj 2020, 23:11
+-- Czas generowania: 16 Maj 2020, 14:50
 -- Wersja serwera: 10.4.11-MariaDB
 -- Wersja PHP: 7.4.2
 
@@ -99,7 +99,11 @@ INSERT INTO `klub` (`id_klub`, `nazwa_klubu`, `siedziba`, `trener_klubu`, `data_
 (55, 'Gornik Zabrze', 'Zabrze', 'Marcin Brosz', 1948, 'Polska'),
 (56, 'Jagiellonia Bialystok', 'Bialystok', ' Iwajlo Petew', 1920, 'Polska'),
 (57, 'Korona Kielce', 'Kielce', 'Maciej Bartoszek', 1973, 'Polska'),
-(58, 'Wisla Krakow', 'Krakow', 'Artur Skowronek', 1927, 'Polska');
+(58, 'Wisla Krakow', 'Krakow', 'Artur Skowronek', 1927, 'Polska'),
+(59, 'Miami FC', 'Miami', 'Nelson Vargas', 2015, 'Stany Zjednoczone'),
+(60, 'Saint Louis FC', 'Missouri', 'Steve Trittschuh', 2014, 'Stany Zjednoczone'),
+(61, 'Philadelphia Union', 'Filadelfia', 'Jim Curtin', 2008, 'Stany Zjednoczone'),
+(62, 'Loudoun', 'Lessburg', 'Ryan Martin', 2018, 'Stany Zjednoczone');
 
 -- --------------------------------------------------------
 
@@ -205,7 +209,29 @@ INSERT INTO `rozgrywka` (`id_rozgrywka`, `data_rozgrywki`, `miejscowosc`, `id_kl
 (47, '2019-11-06 21:00:00', 'Moskwa', 10, 48, 0, 2, 12),
 (48, '2019-11-27 21:00:00', 'Barcelona', 33, 5, 3, 1, 12),
 (49, '2020-02-26 21:00:00', 'Madryt', 27, 35, 1, 2, 12),
-(50, '2020-02-25 21:00:00', 'Londyn', 25, 12, 0, 3, 12);
+(50, '2020-02-25 21:00:00', 'Londyn', 25, 12, 0, 3, 12),
+(51, '2020-01-25 15:00:00', 'Ferrara', 7, 2, 1, 3, 2),
+(52, '2020-01-12 20:45:00', 'Rzym', 26, 3, 1, 2, 2),
+(53, '2020-01-18 18:55:00', 'Genua', 6, 3, 1, 2, 2),
+(54, '2019-12-15 18:00:00', 'Rzym', 26, 7, 3, 1, 2),
+(55, '2019-12-01 18:00:00', 'Neapol', 13, 2, 1, 2, 2),
+(56, '2019-11-04 20:45:00', 'Ferrara', 7, 6, 0, 1, 2),
+(57, '2019-11-02 15:30:00', 'Rzym', 26, 13, 2, 1, 2),
+(58, '2019-10-27 15:00:00', 'Ferrara', 7, 13, 1, 1, 2),
+(59, '2019-10-27 12:30:00', 'Bolonia', 2, 6, 2, 1, 2),
+(60, '2019-10-20 15:00:00', 'Genua', 6, 26, 0, 0, 2),
+(61, '2019-10-19 20:45:00', 'Bolonia', 3, 2, 2, 1, 2),
+(62, '2020-01-28 20:45:00', 'Derby', 15, 39, 4, 0, 7),
+(63, '2020-01-20 21:00:00', 'West Bromwich', 19, 39, 0, 1, 7),
+(64, '2020-01-01 18:15:00', 'West Bromwich', 19, 22, 1, 1, 7),
+(65, '2019-11-04 21:00:00', 'Stoke on Trent', 39, 19, 0, 2, 7),
+(66, '2019-09-21 13:30:00', 'Leeds', 22, 15, 1, 1, 7),
+(67, '2019-08-24 16:00:00', 'Stoke on Tren', 39, 22, 0, 3, 7),
+(68, '2019-08-24 13:30:00', 'Derby', 15, 19, 1, 1, 7),
+(69, '2019-08-17 16:00:00', 'Stoke on Trent', 39, 15, 2, 2, 7),
+(70, '2020-01-17 13:30:00', 'Filadelfia', 59, 61, 0, 0, 8),
+(71, '2020-03-08 01:30:00', 'Filadelfia', 61, 62, 0, 0, 8),
+(72, '2020-03-08 02:00:00', 'Saint Louis', 60, 59, 4, 1, 8);
 
 -- --------------------------------------------------------
 
