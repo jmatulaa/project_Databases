@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Czas generowania: 16 Maj 2020, 14:50
+-- Czas generowania: 17 Maj 2020, 18:34
 -- Wersja serwera: 10.4.11-MariaDB
 -- Wersja PHP: 7.4.2
 
@@ -103,7 +103,20 @@ INSERT INTO `klub` (`id_klub`, `nazwa_klubu`, `siedziba`, `trener_klubu`, `data_
 (59, 'Miami FC', 'Miami', 'Nelson Vargas', 2015, 'Stany Zjednoczone'),
 (60, 'Saint Louis FC', 'Missouri', 'Steve Trittschuh', 2014, 'Stany Zjednoczone'),
 (61, 'Philadelphia Union', 'Filadelfia', 'Jim Curtin', 2008, 'Stany Zjednoczone'),
-(62, 'Loudoun', 'Lessburg', 'Ryan Martin', 2018, 'Stany Zjednoczone');
+(62, 'Loudoun', 'Lessburg', 'Ryan Martin', 2018, 'Stany Zjednoczone'),
+(63, 'FC Astana', 'Nur-Sułtan', 'Roman Hryhorczuk', 2009, 'Kazachstan'),
+(64, 'Kaspij Aktau', 'Aktau', 'Sava Kovačević', 1962, 'Kazachstan'),
+(65, 'Ordabasy', 'Szymkent', 'Kachaber Cchadadze', 2000, 'Kazachstan'),
+(66, 'Kyzylzhar', 'Petropavl', 'Veaceslav Rusnac', 1968, 'Kazachstan'),
+(67, 'Szachtar', 'Charków', 'Luís Castro', 1992, 'Ukraina'),
+(68, 'Lokomotiva Zagrzeb', 'Zagrzeb', 'Sreten Ćuk', 1914, 'Chorwacja'),
+(69, 'Dinamo Zagrzeb', 'Zagrzeb', 'Igor Jovićević', 1945, 'Chorwacja'),
+(70, 'HNK Gorica', 'Velika Gorica', ' Valdas Dambrauskas', 2018, 'Chorwacja'),
+(71, 'Istra', 'Pula', ' Robert Rubčić', 1948, 'Chorwacja'),
+(72, 'Hajduk Split', 'Split', 'Igor Tudor', 1911, 'Chorwacja'),
+(73, 'Slaven Belupo', 'Korpivnica', 'Željko Kopić', 1912, 'Chorwacja'),
+(74, 'Rijeka', 'Rijeka', 'Simon Rožman', 1946, 'Chorwacja'),
+(75, 'Inter Zapresic', 'Zapresic', 'Željko Petrović', 1929, 'Chorwacja');
 
 -- --------------------------------------------------------
 
@@ -231,7 +244,35 @@ INSERT INTO `rozgrywka` (`id_rozgrywka`, `data_rozgrywki`, `miejscowosc`, `id_kl
 (69, '2019-08-17 16:00:00', 'Stoke on Trent', 39, 15, 2, 2, 7),
 (70, '2020-01-17 13:30:00', 'Filadelfia', 59, 61, 0, 0, 8),
 (71, '2020-03-08 01:30:00', 'Filadelfia', 61, 62, 0, 0, 8),
-(72, '2020-03-08 02:00:00', 'Saint Louis', 60, 59, 4, 1, 8);
+(72, '2020-03-08 02:00:00', 'Saint Louis', 60, 59, 4, 1, 8),
+(73, '2020-03-15 12:00:00', 'Kokshetau', 64, 63, 2, 3, 9),
+(74, '2020-03-15 12:00:00', 'Karagandy', 67, 18, 1, 0, 9),
+(75, '2020-03-11 11:00:00', 'Ałmaty', 18, 65, 5, 0, 9),
+(76, '2020-03-11 09:00:00', 'Ałmaty', 63, 65, 1, 1, 9),
+(77, '2020-03-07 09:00:00', 'Ałmaty', 18, 66, 4, 0, 9),
+(78, '2020-03-09 18:00:00', 'Velika Gorica', 70, 68, 1, 3, 10),
+(79, '2020-03-08 17:30:00', 'Rijeka', 74, 72, 2, 0, 10),
+(80, '2020-03-08 15:00:00', 'Zagrzeb', 69, 71, 2, 0, 10),
+(81, '2020-03-07 15:00:00', 'Zapresic', 75, 73, 0, 2, 10),
+(82, '2020-03-04 19:00:00', 'Split', 72, 69, 0, 2, 10),
+(83, '2020-03-03 19:00:00', 'Rijeka', 74, 70, 4, 1, 10),
+(84, '2020-03-03 17:00:00', 'Zagrzeb', 68, 73, 3, 0, 10),
+(85, '2020-02-29 17:30:00', 'Zagrzeb', 69, 74, 4, 0, 10),
+(86, '2020-02-28 19:00:00', 'Velika Gorica', 70, 71, 3, 0, 10),
+(87, '2020-02-27 16:30:00', 'Zapresic', 75, 68, 0, 2, 10),
+(88, '2020-02-23 17:30:00', 'Pula', 71, 73, 1, 1, 10),
+(89, '2020-02-23 15:00:00', 'Zagrzeb', 69, 75, 3, 2, 10),
+(90, '2020-02-22 15:00:00', 'Split', 72, 70, 6, 0, 10),
+(91, '2020-02-16 17:30:00', 'Velika Gorica', 70, 74, 0, 0, 10),
+(92, '2020-02-15 17:30:00', 'Koprivnica', 73, 72, 2, 1, 10),
+(93, '2020-02-14 18:00:00', 'Zagrzeb', 68, 71, 2, 0, 10),
+(94, '2020-02-09 17:30:00', 'Zagrzeb', 69, 70, 2, 0, 10),
+(95, '2020-02-09 15:00:00', 'Rijeka', 74, 73, 1, 0, 10),
+(96, '2020-02-08 17:30:00', 'Split', 72, 68, 1, 0, 10),
+(97, '2020-02-01 17:30:00', 'Koprivnica', 73, 69, 0, 2, 10),
+(98, '2020-02-01 15:00:00', 'Zagrzeb', 74, 68, 2, 1, 10),
+(99, '2020-01-31 18:00:00', 'Zapresic', 75, 71, 2, 0, 10),
+(100, '2019-12-14 17:30:00', 'Zagrzeb', 69, 68, 1, 0, 10);
 
 -- --------------------------------------------------------
 
