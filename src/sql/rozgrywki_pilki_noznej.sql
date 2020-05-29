@@ -12,6 +12,16 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+CREATE USER gosc@’localhost’ IDENTIFIED BY ‘gosc’;
+GRANT SELECT ON rozgrywki_pilki_noznej.* TO gosc@’localhost’;
+CREATE USER rpn_admin@’localhost’ IDENTIFIED BY ‘rpn_admin’;
+GRANT ALL PRIVILEGES ON rozgrywki_pilki_noznej.* TO rpn_admin@’localhost’;
+
+DROP SCHEMA
+IF EXISTS rozgrywki_pilki_noznej
+	CREATE SCHEMA rozgrywki_pilki_noznej COLLATE = utf8_general_ci;
+USE rozgrywki_pilki_noznej;
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
