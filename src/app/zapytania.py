@@ -1,9 +1,25 @@
 import pymysql
+from pomoc import wybor
+upr = wybor
+if upr == "1": usr = 'gosc'
+if upr == "2": usr = 'rpn_admin'
 
 
-def wyswietlanie_rep_danego_kraju(upr):
-    if upr == "1": usr = 'gosc'
-    if upr == "2": usr = 'rpn_admin'
+def wybor_zapytania(numer):
+    if numer == "1":
+        wyswietlanie_rep_danego_kraju()
+    if numer == "2":
+        wyswietlenie_zawodnikow_klubow_na_danej_pozycji()
+    if numer == "3":
+        wyswietlenie_klubow_wygranych_ligi()
+    if numer == "4":
+        wybor_zliczania = input("Wybierz literkę (a, b lub c): ")
+        while wybor_zliczania != "a" and wybor_zliczania != "b" and wybor_zliczania != "c":
+            wybor_zliczania = input("Taki wybór nie istnieje, spróbuj jeszcze raz: ")
+        zliczenie_klubow(wybor_zliczania)
+
+
+def wyswietlanie_rep_danego_kraju():
     connection = pymysql.connect(host='localhost',
                                  user=usr,
                                  password=usr,
@@ -21,7 +37,7 @@ def wyswietlanie_rep_danego_kraju(upr):
             nazwy = ("ID zawodnika", "Imie", "Nazwisko", "Pozycja", "Reprezentacja", "Wiek", "ID klubu", "Waga")
             s2 = "| {0:25} | {1:20}| {2:20}| {3:20}| {4:20}| {5:6} | {6:10} | {7:6} |"
             print(s2.format(nazwy[0], nazwy[1], nazwy[2], nazwy[3], nazwy[4], nazwy[5], nazwy[6], nazwy[7]))
-            print("{:->139}".format(""))
+            print("{:->148}".format(""))
 
             for row in result:
                 print(s2.format(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7]))
@@ -33,8 +49,8 @@ def wyswietlanie_rep_danego_kraju(upr):
 def wyswietlenie_zawodnikow_klubow_na_danej_pozycji():
     pozycja = input("Podaj pozycje zawodnikow, którą chcesz wyświetlić: ")
     connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='root',
+                                 user=usr,
+                                 password=usr,
                                  db='rozgrywki_pilki_noznej'
                                  )
 
@@ -59,8 +75,8 @@ def wyswietlenie_zawodnikow_klubow_na_danej_pozycji():
 
 def wyswietlenie_klubow_wygranych_ligi():
     connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='root',
+                                 user=usr,
+                                 password=usr,
                                  db='rozgrywki_pilki_noznej'
                                  )
 
@@ -83,10 +99,43 @@ def wyswietlenie_klubow_wygranych_ligi():
         connection.close()
 
 
+def zliczenie_klubow(wybor_zliczania):
+    connection = pymysql.connect(host='localhost',
+                                 user=usr,
+                                 password=usr,
+                                 db='rozgrywki_pilki_noznej'
+                                 )
+
+    try:
+        with connection.cursor() as cursor:
+            if wybor_zliczania == "a":
+                sql = "SELECT COUNT(id_klub)as liczbaKlubow, siedziba FROM klub GROUP BY siedziba HAVING COUNT(id_klub) > 1"
+                nazwy = ("Liczba klubów", "Siedziba")
+            if wybor_zliczania == "b":
+                sql = "SELECT COUNT(id_klub)as liczbaKlubow, data_zalozenia FROM klub GROUP BY data_zalozenia HAVING COUNT(id_klub) > 1"
+                nazwy = ("Liczba klubów", "Rok założenia")
+            if wybor_zliczania == "c":
+                sql = "SELECT COUNT(id_klub)as liczbaKlubow, panstwo FROM klub GROUP BY panstwo"
+                nazwy = ("Liczba klubów", "Państwo")
+
+            cursor.execute(sql)
+            result = cursor.fetchall()
+
+            s2 = "| {0:15}| {1:20}|"
+            print(s2.format(nazwy[0], nazwy[1]))
+            print("{:->42}".format(""))
+
+            for row in result:
+                print(s2.format(row[0], row[1]))
+
+    finally:
+        connection.close()
+
+
 def wyswietlenie_zawodnikow_o_okreslonej_wadze():
     connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='root',
+                                 user=usr,
+                                 password=usr,
                                  db='rozgrywki_pilki_noznej'
                                  )
 
@@ -112,8 +161,8 @@ def wyswietlenie_zawodnikow_o_okreslonej_wadze():
 
 def wyswietlenie_punktow_w_ligach():
     connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='root',
+                                 user=usr,
+                                 password=usr,
                                  db='rozgrywki_pilki_noznej'
                                  )
 
@@ -139,8 +188,8 @@ def wyswietlenie_punktow_w_ligach():
 
 def liczenie_srednich(wybor_sredniej):
     connection = pymysql.connect(host='localhost',
-                                 user='root',
-                                 password='root',
+                                 user=usr,
+                                 password=usr,
                                  db='rozgrywki_pilki_noznej'
                                  )
 
