@@ -168,7 +168,7 @@ INSERT INTO `liga` (`id_liga`, `szczebel_rozgrywkowy`, `data_zalozenia`, `panstw
 --
 
 CREATE TABLE `rozgrywka` (
-  `id_rozgrywka` int(11) NOT NULL,
+  `id_rozgrywka` int(11) NOT NULL AUTO_INCREMENT,
   `data_rozgrywki` datetime NOT NULL,
   `miejscowosc` varchar(50) DEFAULT NULL,
   `id_klub1` int(11) DEFAULT NULL,
@@ -368,7 +368,7 @@ INSERT INTO `wynik` (`id_wynik`, `id_klub`, `rozegrane`, `wygrane`, `remisy`, `p
 --
 
 CREATE TABLE `zawodnik` (
-  `id_zawodnik` int(11) NOT NULL,
+  `id_zawodnik` int(11) NOT NULL AUTO_INCREMENT,
   `imie_zawodnika` varchar(50) NOT NULL,
   `nazwisko_zawodnika` varchar(50) NOT NULL,
   `pozycja` varchar(50) DEFAULT NULL,

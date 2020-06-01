@@ -1,10 +1,7 @@
-wybor = "1"
-
-
 def log():
-    haslo = ""
 
     global wybor
+    wybor = "1"
 
     while wybor != "0":
         # clear screen
@@ -44,6 +41,7 @@ def log():
             print("Błędny wybór, spróbuj ponowie.")
             # timer przed wyczyszczeniem ekranu, przed wyswieleniem głównego menu
     print("\n")
+    return wybor
 
     # zapisujemy numer wyboru - jako zmienną globalną której używamy w zapytania.py
     # pozwala ona zalogować się do bazy albo jako gość: login: gość, haslo: gość,
@@ -56,9 +54,9 @@ def wypisanie_mozliwych_opcji():
     # wyświetlenie listy możliwych operacji, użytkownik wybiera numer z klawiatury, aby dokonać zapytania
     # jesli użytkownik jest zalogowany jako gość to może wybrać tylko 1-7, admin 8-w górę
 
-    print("Lista możliwych operacji:")
+    print("\nLista możliwych operacji:")
     print("1. Wyswietlanie zawodników z  reprezentacji wybranego kraju")
-    print("2. Wyświetlenie zawodników ze wszystkiech na danej pozycji, ze wszystkich klubów")
+    print("2. Wyświetlenie wszystkich zawodników na danej pozycji, ze wszystkich klubów")
     print("3. Wyświetlenie zwycięzkich klubów podczas poszczególnych lig")
     print("4. Zliczenie ilości klubów dla tych samych parametrów: ")
     print("\ta. Siedziba (miasto, jeśli wyników jest więcej niż jeden)")
@@ -70,4 +68,20 @@ def wypisanie_mozliwych_opcji():
     print("\ta. Wiek zawodników")
     print("\tb. Liczba drużyn w ligach")
     print("\tc. Ilość punktów uzyskanych we wszystkich ligach")
+    if wybor == "2":
+        print("8. Dodanie zawodnika")
+        print("9. Dodanie klubu do bazy danych")
+    print("Jeśli chcesz się wylogować wpisz '-1'")
+    print("Jeśli chcesz opuścić aplikację wpisz '10'")
     print("\n")
+
+
+def sprawdzenie_miejscowosci(wynik, nazwa_miejscowosci):
+    i = 0
+    while i == 0:
+        for wiersz in wynik:
+            if nazwa_miejscowosci == wiersz[0]:
+                i = 1
+        if i != 1:
+            nazwa_miejscowosci = input("Nie ma takiej pozycji, spróbuj ponownie: ")
+    return nazwa_miejscowosci
