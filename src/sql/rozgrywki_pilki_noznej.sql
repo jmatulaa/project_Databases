@@ -12,15 +12,15 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-CREATE USER gosc@’localhost’ IDENTIFIED BY ‘gosc’;
-GRANT SELECT ON rozgrywki_pilki_noznej.* TO gosc@’localhost’;
-CREATE USER rpn_admin@’localhost’ IDENTIFIED BY ‘rpn_admin’;
-GRANT ALL PRIVILEGES ON rozgrywki_pilki_noznej.* TO rpn_admin@’localhost’;
-
 DROP SCHEMA
 IF EXISTS rozgrywki_pilki_noznej
 	CREATE SCHEMA rozgrywki_pilki_noznej COLLATE = utf8_general_ci;
 USE rozgrywki_pilki_noznej;
+
+CREATE USER gosc@’localhost’ IDENTIFIED BY ‘gosc’;
+GRANT SELECT ON rozgrywki_pilki_noznej.* TO gosc@’localhost’;
+CREATE USER rpn_admin@’localhost’ IDENTIFIED BY ‘rpn_admin’;
+GRANT ALL PRIVILEGES ON rozgrywki_pilki_noznej.* TO rpn_admin@’localhost’;
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -168,7 +168,7 @@ INSERT INTO `liga` (`id_liga`, `szczebel_rozgrywkowy`, `data_zalozenia`, `panstw
 --
 
 CREATE TABLE `rozgrywka` (
-  `id_rozgrywka` int(11) NOT NULL AUTO_INCREMENT,
+  `id_rozgrywka` int(11) NOT NULL,
   `data_rozgrywki` datetime NOT NULL,
   `miejscowosc` varchar(50) DEFAULT NULL,
   `id_klub1` int(11) DEFAULT NULL,
@@ -368,7 +368,7 @@ INSERT INTO `wynik` (`id_wynik`, `id_klub`, `rozegrane`, `wygrane`, `remisy`, `p
 --
 
 CREATE TABLE `zawodnik` (
-  `id_zawodnik` int(11) NOT NULL AUTO_INCREMENT,
+  `id_zawodnik` int(11) NOT NULL,
   `imie_zawodnika` varchar(50) NOT NULL,
   `nazwisko_zawodnika` varchar(50) NOT NULL,
   `pozycja` varchar(50) DEFAULT NULL,

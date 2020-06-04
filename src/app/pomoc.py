@@ -1,10 +1,13 @@
+import time
+
+
 def log():
 
     global wybor
     wybor = "1"
 
     while wybor != "0":
-        # clear screen
+
         print("Wybierz, w jaki sposób chcesz korzystać z aplikacji: ")
         print("\t1. Gość - tylko przeglądanie danych")
         print("\t2. Admin - możliwość dodawania, usuwania, modyfikacji rekordów.")
@@ -30,16 +33,16 @@ def log():
                 if licznikproblogowan < 3:
                     haslo = input("Błędne hasło admina, spróbuj jeszcze raz: ")
                 else:
-                    print("Przekroczono limit prób")
-                    #wait, bo wracamy do głównego interfejsu
+                    print("Przekroczono limit prób\n")
+                    time.sleep(0.25)
                     break
 
             if haslo == "rpn_admin":
+                time.sleep(0.25)
                 break
 
         else:
             print("Błędny wybór, spróbuj ponowie.")
-            # timer przed wyczyszczeniem ekranu, przed wyswieleniem głównego menu
     print("\n")
     return wybor
 
@@ -53,26 +56,49 @@ def log():
 def wypisanie_mozliwych_opcji():
     # wyświetlenie listy możliwych operacji, użytkownik wybiera numer z klawiatury, aby dokonać zapytania
     # jesli użytkownik jest zalogowany jako gość to może wybrać tylko 1-7, admin 8-w górę
-
-    print("\nLista możliwych operacji:")
+    time.sleep(0.25)
+    print("Lista możliwych operacji:")
+    time.sleep(0.25)
     print("1. Wyswietlanie zawodników z  reprezentacji wybranego kraju")
+    time.sleep(0.15)
     print("2. Wyświetlenie wszystkich zawodników na danej pozycji, ze wszystkich klubów")
+    time.sleep(0.15)
     print("3. Wyświetlenie zwycięzkich klubów podczas poszczególnych lig")
+    time.sleep(0.15)
     print("4. Zliczenie ilości klubów dla tych samych parametrów: ")
     print("\ta. Siedziba (miasto, jeśli wyników jest więcej niż jeden)")
     print("\tb. Rok założenia (jeśli wyników jest więcej niż jeden)")
     print("\tc. Państwo w którym dany klub stacjonuje")
+    time.sleep(0.15)
     print("5. Zestawienie punktów wszystkich klubów uzyskanych w ligach")
+    time.sleep(0.15)
     print("6. Wyświetlenie rozgrywek które odbyły się w trzech danych miastach ")
+    time.sleep(0.15)
     print("7. Wybierz, z jakich wyników chcesz wyświetlić wartość średnią:")
     print("\ta. Wiek zawodników")
     print("\tb. Liczba drużyn w ligach")
     print("\tc. Ilość punktów uzyskanych we wszystkich ligach")
+    time.sleep(0.15)
+    print("8. Wyświetlenie informacji o ligach")
+    time.sleep(0.15)
+    print("9. Zestawienie wszystkich remisów jakie miały miejsce do tej pory w rozgrywkach")
+    time.sleep(0.15)
     if wybor == "2":
-        print("8. Dodanie zawodnika")
-        print("9. Dodanie klubu do bazy danych")
-    print("Jeśli chcesz się wylogować wpisz '-1'")
-    print("Jeśli chcesz opuścić aplikację wpisz '10'")
+        print("10. Dodanie zawodnika")
+        time.sleep(0.15)
+        print("11. Dodanie klubu do bazy danych")
+        time.sleep(0.15)
+        print("12. Zmiana klubu danego zawodnika")
+        time.sleep(0.15)
+        print("13. Usunięcie klubu z bazy danych")
+        time.sleep(0.15)
+        print("14. Zmiana klubu zwycięskiego w danej lidze")
+        time.sleep(0.15)
+        print("15. Dodanie rozgrywki")
+
+    print("16. Wylogowanie")
+    time.sleep(0.15)
+    print("17. Zakończenie aplikacji")
     print("\n")
 
 
@@ -85,3 +111,7 @@ def sprawdzenie_miejscowosci(wynik, nazwa_miejscowosci):
         if i != 1:
             nazwa_miejscowosci = input("Nie ma takiej pozycji, spróbuj ponownie: ")
     return nazwa_miejscowosci
+
+
+def pauza():
+    input("\nNaciśnij dowolny klawisz aby kontynuować dalsze korzystanie z aplikacji\n")
