@@ -18,8 +18,6 @@ while numer != "0":
         exit(0)
     if numer == 16:
         wybor = log()
-        wypisanie_mozliwych_opcji()
-        numer = int(input("Wybierz numer zapytania które chcesz uruchomić: "))
     else:
         wybor_zapytania(numer, wybor)
 

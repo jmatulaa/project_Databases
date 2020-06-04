@@ -1,6 +1,7 @@
 import pymysql
 from pomoc import sprawdzenie_miejscowosci
 from pomoc import pauza
+from pomoc import sprawdzenie_indeksu_klubu
 import array as arr
 import time
 
@@ -94,8 +95,9 @@ def wyswietlanie_rep_danego_kraju():
             while numer_panstwa.isdigit() is False or int(numer_panstwa) > i or int(numer_panstwa) < 1:
                 numer_panstwa = input("Nie ma takiego numeru państwa. Spróbuj ponownie: ")
             numer_panstwa = int(numer_panstwa) - 1
+
             sql = "SELECT id_zawodnik, imie_zawodnika, nazwisko_zawodnika, pozycja, reprezentacja, wiek_zawodnika, id_klub, waga \
-                    FROM zawodnik WHERE reprezentacja=(%s)"
+                    FROM zawodnik WHERE reprezentacja=(%s) AND id_klub IS NOT NULL"
             cursor.execute(sql, tablica_panstw[numer_panstwa])
             result = cursor.fetchall()
 
@@ -135,7 +137,8 @@ def wyswietlenie_zawodnikow_klubow_na_danej_pozycji():
                     pozycja = input("Nie ma takiej pozycji, spróbuj ponownie: ")
 
             sql = "SELECT klub.nazwa_klubu, zawodnik.imie_zawodnika, zawodnik.nazwisko_zawodnika \
-                    FROM klub, zawodnik WHERE zawodnik.id_klub=klub.id_klub AND zawodnik.pozycja=(%s)"
+                    FROM klub, zawodnik WHERE zawodnik.id_klub=klub.id_klub AND zawodnik.pozycja=(%s) \
+                    AND zawodnik.id_klub IS NOT NULL ORDER BY klub.nazwa_klubu"
             cursor.execute(sql, pozycja)
             result = cursor.fetchall()
 
@@ -162,7 +165,7 @@ def wyswietlenie_klubow_wygranych_ligi():
     try:
         with connection.cursor() as cursor:
             sql = "SELECT liga.szczebel_rozgrywkowy, klub.nazwa_klubu, liga.panstwo \
-                    FROM liga, klub WHERE liga.id_klub_wygrany=klub.id_klub"
+                    FROM liga, klub WHERE liga.id_klub_wygrany=klub.id_klub AND liga.id_klub_wygrany IS NOT NULL"
             cursor.execute(sql)
             result = cursor.fetchall()
 
@@ -277,7 +280,7 @@ def wyswietlenie_rozgrywek_w_miastach():
             nazwy = ("Data spotkania", "Miejscowość", "Klub", "Wynik", "Wynik", "Klub", "Liga")
             s2 = "| {0:21}| {1:15}| {2:22}| {3:7}| {4:7}| {5:22}| {6:25}|"
             print(s2.format(nazwy[0], nazwy[1], nazwy[2], nazwy[3], nazwy[4], nazwy[5], nazwy[6]))
-            print("{:->114}".format(""))
+            print("{:->134}".format(""))
 
             for row in result:
                 time.sleep(0.15)
@@ -384,42 +387,46 @@ def dodawanie_zawodnika():
 
     try:
         with connection.cursor() as cursor:
-            print("W jakim klubie gra zawodnik?")
-            sql1 = "SELECT id_klub, nazwa_klubu FROM klub"
+            ("W jakim klubie gra zawodnik?")
+            sql1 = "SELECT id_klub, nazwa_klubu FROM klub ORDER BY id_klub"
             cursor.execute(sql1)
             result1 = cursor.fetchall()
             i = 0
+            tab_indeksow = arr.array('i')
             input("Nciśnij dowolny klawisz aby wyświetlić dostepne kluby:")
             for row in result1:
                 time.sleep(0.1)
+                tab_indeksow.append(int(row[0]))
                 print("\t", row[0], ".", row[1])
                 i = i + 1
+                indeks_ostatniego = row[0]
 
             print("Jeśli klubu nie ma w bazie, wpisz 0 aby dodać klub do bazy")
-            opcja = input("Wybierz klub lub opcję: ")
-            while (opcja.isdigit() is False) or int(opcja) < 0 or int(opcja) > i:
-                opcja = input("Niepoprawny wybór, spróbuj ponownie: ")
 
-            opcja = int(opcja)
+            opcja = sprawdzenie_indeksu_klubu(i, tab_indeksow)
+
             if opcja == 0:
+                print("Dodaj klub do bazy:")
                 dodanie_klubu()
-                dodawanie_id_klub = i + 1
+                dodawanie_id_klub = indeks_ostatniego + 1
             else:
                 dodawanie_id_klub = int(opcja)
 
-            sql2 = "SELECT id_zawodnik FROM zawodnik"
+            sql2 = "SELECT id_zawodnik FROM zawodnik ORDER BY id_zawodnik"
             cursor.execute(sql2)
-            id_zawodnika = cursor.rowcount + 2
+            for row1 in cursor.fetchall():
+                id_zawodnika = row1[0]
+            id_zawodnika = id_zawodnika + 1
             dodawanie_imie = input("Imie zawodnika:")
             dodawanie_nazwisko = input("Nazwisko zawodnika:")
             dodawanie_pozycja = input("Pozycja:")
             dodawanie_reprezentacja = input("Reprezentacja:")
             dodawanie_wiek = input("Wiek zawodnika:")
-            while dodawanie_wiek.isdigit() is False:
+            while dodawanie_wiek.isdigit() is False and int(dodawanie_wiek) < 0:
                 dodawanie_wiek = input("Wiek może być tylko liczbą całkowitą. Spróbuj ponownie: ")
             dodawanie_wiek = int(dodawanie_wiek)
             dodawanie_waga = input("Waga zawodnika:")
-            while dodawanie_waga.isdigit() is False:
+            while dodawanie_waga.isdigit() is False and int(dodawanie_waga) < 0:
                 dodawanie_waga = input("Waga może być tylko liczbą całkowitą. Spróbuj ponownie: ")
             dodawanie_waga = int(dodawanie_waga)
 
@@ -444,12 +451,11 @@ def dodanie_klubu():
     try:
         with connection.cursor() as cursor:
 
-            sql1 = "SELECT id_klub FROM klub"
+            sql1 = "SELECT id_klub FROM klub ORDER BY id_klub"
             cursor.execute(sql1)
             result1 = cursor.fetchall()
-            i = 0
             for row in result1:
-                    i = i + 1
+                i = int(row[0])
 
             dodawanie_id_klubu = i + 1
             dodawanie_nazwa = input("Nazwa klubu: ")
@@ -484,7 +490,7 @@ def zmiana_klubu_danego_zawodnika():
             sql1 = "SELECT DISTINCT panstwo FROM klub"
             cursor.execute(sql1)
             result1 = cursor.fetchall()
-            panstwo = input("Wybierz państwo pochodzenia zawodnika który zmienił klub: ")
+            panstwo = input("Wpisz państwo pochodzenia zawodnika który zmienił klub: ")
             i = 0
             while i == 0:
                 for row1 in result1:
@@ -493,7 +499,7 @@ def zmiana_klubu_danego_zawodnika():
                 if i != 1:
                     panstwo = input("Nie ma takiego państwa, spróbuj ponownie: ")
 
-            print("Który klub z wybranego państwa rozwiązał działaność lub zostaje usunięty z bazy danych?")
+            input("Który zawodnik zmiena klub? Naciśnij dowolny klawisz aby wyświetlić listę zawodników")
             sql2 = "SELECT id_zawodnik, imie_zawodnika, nazwisko_zawodnika FROM zawodnik WHERE reprezentacja=(%s)"
             cursor.execute(sql2, panstwo)
             result1 = cursor.fetchall()
@@ -505,36 +511,33 @@ def zmiana_klubu_danego_zawodnika():
                 print("\t", row1[0], ".", row1[1], row1[2])
                 i = i + 1
             k = 0
-            numer_zawodnika = int(input("Wybierz ID zawodnika: "))
+            numer_zawodnika = input("Wybierz ID zawodnika: ")
             while k == 0:
-                for j in range(i):
-                    if numer_zawodnika == tab_indeksow[j]:
-                        k = 1
-                if k != 1:
-                    numer_zawodnika = int(input("Nie ma takiego zawodnika w wybranym panstwie, spróbuj ponownie: "))
+                if numer_zawodnika.isdigit() is True:
+                    for j in range(i):
+                        if int(numer_zawodnika) == tab_indeksow[j]:
+                            k = 1
+                            break
+                if numer_zawodnika.isdigit() is False or k == 0:
+                    numer_zawodnika = input("Nie ma takiego zawodnika, spróbuj ponownie: ")
+            numer_zawodnika = int(numer_zawodnika)
 
+            tab_indeksow_klubow = arr.array('i')
             j = 0
-            sql3 = "SELECT id_klub, nazwa_klubu FROM klub"
+            sql3 = "SELECT id_klub, nazwa_klubu FROM klub ORDER BY id_klub"
             cursor.execute(sql3)
             result2 = cursor.fetchall()
-            print("Dostepne kluby:")
+            print("Do jakiego klubu przenosi się zawodnik?")
+            input("Naciśnij dowolny klawisz aby wyświetlić dostepne kluby:")
             for row in result2:
-                time.sleep(0.15)
+                time.sleep(0.11)
+                tab_indeksow_klubow.append(int(row[0]))
                 print("\t", row[0], ".", row[1])
                 j = j + 1
 
-            print("Czy zawodnik: ")
-            print("\ta) został przypisany do klubu z listy")
-            print("\tb) został przypisany do nowego klubu - należy dodać klub")
-            wybrana_opcja = input("Wybierz a lub b: ")
-            while wybrana_opcja != "a" and wybrana_opcja != "b":
-                wybrana_opcja = input("Wybrano niepoprawną opcję. Spróbuj ponownie: ")
-            if wybrana_opcja == "a":
-                numer_klubu = input("Wybierz numer klubu: ")
-                while numer_klubu.isdigit() is False or int(numer_klubu) < 1 or int(numer_klubu) > j:
-                    numer_klubu = input("Klub o takim numerze nie istnieje, wybierz ponownie: ")
-                numer_klubu = int(numer_klubu)
-            else:
+            print("Jesli klubu nie ma w bazie, wybierz 0 aby dodać klub")
+            numer_klubu = sprawdzenie_indeksu_klubu(j, tab_indeksow_klubow)
+            if numer_klubu == 0:
                 dodanie_klubu()
                 numer_klubu = cursor.rowcount() + 1
                 print("numer nowego", numer_klubu)
@@ -573,6 +576,7 @@ def usuniecie_klubu():
                     panstwo = input("Nie ma takiego państwa, spróbuj ponownie: ")
 
             print("Który klub z wybranego państwa rozwiązał działaność lub zostaje usunięty z bazy danych?")
+            input("Naciśnij dowolny klawisz aby wyświetlić listę dostępnych klubów")
             sql1 = "SELECT id_klub, nazwa_klubu FROM klub WHERE panstwo=(%s)"
             cursor.execute(sql1, panstwo)
             result1 = cursor.fetchall()
@@ -583,32 +587,27 @@ def usuniecie_klubu():
                 tab_indeksow.append(int(row1[0]))
                 print("\t", row1[0], ".", row1[1])
                 i = i + 1
-            k = 0
-            numer_klubu = input("Wybierz numer klubu: ")
-            while numer_klubu.isdigit() is False:
-                numer_klubu = input("Nie ma takiego klubu w wybranym panstwie, spróbuj ponownie: ")
-            numer_klubu = int(numer_klubu)
-            while k == 0:
-                for j in range(i):
-                    if numer_klubu == tab_indeksow[j]:
-                        k = 1
-                if k != 1:
-                    numer_klubu = int(input("Nie ma takiego klubu w wybranym panstwie, spróbuj ponownie: "))
+
+            numer_klubu_usuwanego = sprawdzenie_indeksu_klubu(i, tab_indeksow)
+
+            while numer_klubu_usuwanego == 0:
+                print("Niepoprawny numer klubu. Sprónuj ponownie.")
+                numer_klubu_usuwanego = sprawdzenie_indeksu_klubu(i, tab_indeksow)
 
             odp = input("Czy na pewno chcesz usunąć wybrany klub? t/n: ")
             while odp != "t" and odp != "n":
                 odp = input("Nie ma takiej opcji. Wprowadź t (tak) lub n (nie): ")
             if odp == "t":
                 sql1 = "UPDATE zawodnik SET id_klub=NULL WHERE id_klub = (%s)"
-                cursor.execute(sql1, numer_klubu)
+                cursor.execute(sql1, numer_klubu_usuwanego)
                 sql2 = "UPDATE liga SET id_klub_wygrany=NULL WHERE id_klub_wygrany = (%s)"
-                cursor.execute(sql2, numer_klubu)
+                cursor.execute(sql2, numer_klubu_usuwanego)
                 sql3 = "DELETE FROM wynik WHERE id_klub = (%s)"
-                cursor.execute(sql3, numer_klubu)
+                cursor.execute(sql3, numer_klubu_usuwanego)
                 sql4 = "DELETE FROM rozgrywka WHERE id_klub1 = (%s) OR id_klub2 = (%s)"
-                cursor.execute(sql4, (numer_klubu, numer_klubu))
+                cursor.execute(sql4, (numer_klubu_usuwanego, numer_klubu_usuwanego))
                 sql5 = "DELETE FROM klub WHERE id_klub = (%s)"
-                cursor.execute(sql5, numer_klubu)
+                cursor.execute(sql5, numer_klubu_usuwanego)
                 connection.commit()
                 print("Usunięto wybrany klub z bazy danych")
             else:
@@ -628,44 +627,46 @@ def zmiana_klubu_zwycieskiego_ligi():
     try:
         with connection.cursor() as cursor:
 
-            print("W której lidze zmienił się zwycięzca?")
+            input("W której lidze zmienił się zwycięzca? Naciśnij dowolny klawisz aby wyświetlić dostępne ligi")
             sql = "SELECT id_liga, szczebel_rozgrywkowy FROM liga"
             cursor.execute(sql)
             result1 = cursor.fetchall()
+            tab_indeksow_ligi = arr.array('i')
             i = 0
             for row in result1:
-                time.sleep(0.15)
+                time.sleep(0.1)
+                tab_indeksow_ligi.append(int(row[0]))
                 print("\t", row[0], ".", row[1])
                 i = i + 1
 
+            k = 0
             wybrany_numer_ligi = input("Podaj numer ligi: ")
-            while wybrany_numer_ligi.isdigit() is False or int(wybrany_numer_ligi) < 1 or int(wybrany_numer_ligi) > i:
-                wybrany_numer_ligi = input("Liga o takim numerze nie istnieje, wybierz ponownie: ")
+            while k == 0:
+                if wybrany_numer_ligi.isdigit() is True:
+                    for j in range(i):
+                        if int(wybrany_numer_ligi) == tab_indeksow_ligi[j]:
+                            k = 1
+                            break
+                if wybrany_numer_ligi.isdigit() is False or k == 0:
+                    wybrany_numer_ligi = input("Nie ma takiej ligi, spróbuj ponownie: ")
             wybrany_numer_ligi = int(wybrany_numer_ligi)
-            sql2 = "SELECT id_klub, nazwa_klubu FROM klub"
+            sql2 = "SELECT id_klub, nazwa_klubu FROM klub ORDER BY id_klub"
             cursor.execute(sql2)
             result1 = cursor.fetchall()
+            tab_indeksow_klubow = arr.array('i')
             j = 0
-            print("Dostepne kluby:")
+            input("Naciśnij dowolny klawisz aby wyświetlić dostępne kluby")
             for row in result1:
                 time.sleep(0.15)
+                tab_indeksow_klubow.append(int(row[0]))
                 print("\t", row[0], ".", row[1])
                 j = j + 1
 
-            print("Czy nowy klub zwycięski dla danej ligi: ")
-            print("\ta) istnieje na liście dostępnych klubów")
-            print("\tb) należy dodać klub do bazy")
-            wybrana_opcja = input("Wybierz a lub b: ")
-            while wybrana_opcja != "a" and wybrana_opcja != "b":
-                wybrana_opcja = input("Wybrano niepoprawną opcję. Spróbuj ponownie: ")
-            if wybrana_opcja == "a":
-                numer_klubu = input("Wybierz numer klubu: ")
-                while numer_klubu.isdigit() is False or int(numer_klubu) < 1 or int(numer_klubu) > j:
-                    numer_klubu = input("Klub o takim numerze nie istnieje, wybierz ponownie: ")
-                numer_klubu = int(numer_klubu)
-            else:
+            print("Jesli klubu nie ma w bazie, wybierz 0 aby dodać klub")
+            numer_klubu = sprawdzenie_indeksu_klubu(j, tab_indeksow_klubow)
+            if numer_klubu == 0:
                 dodanie_klubu()
-                numer_klubu = cursor.rowcount() + 1
+                numer_klubu = j + 1
 
             dodawane_wartosci = (numer_klubu, wybrany_numer_ligi)
             sql = "UPDATE liga SET id_klub_wygrany=(%s) WHERE id_liga=(%s)"
@@ -688,60 +689,54 @@ def dodanie_rozgrywki():
     try:
         with connection.cursor() as cursor:
 
-            print("Liga w obrębie jakiej rozgrywa się spotkanie")
+            input("Liga w obrębie jakiej rozgrywa się spotkanie. Naciśnij dowolny klawisz aby wyświetlić ligi")
             sql = "SELECT id_liga, szczebel_rozgrywkowy FROM liga"
             cursor.execute(sql)
             result1 = cursor.fetchall()
+            tab_indeksow_ligi = arr.array('i')
             i = 0
             for row in result1:
-                time.sleep(0.15)
+                time.sleep(0.1)
+                tab_indeksow_ligi.append(int(row[0]))
                 print("\t", row[0], ".", row[1])
                 i = i + 1
+            k = 0
             wybrany_numer_ligi = input("Podaj numer ligi: ")
-            while wybrany_numer_ligi.isdigit() is False or int(wybrany_numer_ligi) < 1 or int(wybrany_numer_ligi) > i:
-                wybrany_numer_ligi = input("Liga o takim numerze nie istnieje, wybierz ponownie: ")
+            while k == 0:
+                if wybrany_numer_ligi.isdigit() is True:
+                    for j in range(i):
+                        if int(wybrany_numer_ligi) == tab_indeksow_ligi[j]:
+                            k = 1
+                            break
+                if wybrany_numer_ligi.isdigit() is False or k == 0:
+                    wybrany_numer_ligi = input("Nie ma takiej ligi, spróbuj ponownie: ")
             wybrany_numer_ligi = int(wybrany_numer_ligi)
 
-            sql2 = "SELECT id_klub, nazwa_klubu FROM klub"
+            sql2 = "SELECT id_klub, nazwa_klubu FROM klub ORDER BY id_klub"
             cursor.execute(sql2)
             result1 = cursor.fetchall()
+            tab_indeksow_klubu = arr.array('i')
             j = 0
-            print("Rozgrywka ma miejsce między dwoma klubami. Lista wszystkich klubów:")
-            for row in result1:
-                time.sleep(0.15)
-                print("\t", row[0], ".", row[1])
+            input("Rozgrywka ma miejsce między dwoma klubami. Naciśnij dowolny klawisz by pokazać wszystkie kluby:")
+            for row1 in result1:
+                time.sleep(0.1)
+                tab_indeksow_klubu.append(int(row1[0]))
+                print("\t", row1[0], ".", row1[1])
                 j = j + 1
+                indeks_ostatniego = row1[0]
 
-            print("Czy pierwszy klub znajduje się na liście?")
-            print("\ta) tak, wybierz z listy")
-            print("\tb) nie, należy dodać klub do bazy")
-            wybrana_opcja = input("Wybierz a lub b: ")
-            while wybrana_opcja != "a" and wybrana_opcja != "b":
-                wybrana_opcja = input("Wybrano niepoprawną opcję. Spróbuj ponownie: ")
-            if wybrana_opcja == "a":
-                numer_klubu1 = input("Wybierz numer klubu: ")
-                while numer_klubu1.isdigit() is False or int(numer_klubu1) < 1 or int(numer_klubu1) > j:
-                    numer_klubu1 = input("Klub o takim numerze nie istnieje, wybierz ponownie: ")
-                numer_klubu1 = int(numer_klubu1)
-            else:
+            print("Jeśli klub nie znajduje się na liście, wybierz 0 aby dodać go do bazy")
+            print("Pierwszy klub:")
+            numer_klubu1 = sprawdzenie_indeksu_klubu(j, tab_indeksow_klubu)
+            if numer_klubu1 == 0:
                 dodanie_klubu()
-                numer_klubu1 = cursor.rowcount() + 1
+                numer_klubu1 = indeks_ostatniego + 1
 
-            print("Czy drugi klub znajduje się na liście?")
-            print("\ta) tak, wybierz z listy")
-            print("\tb) nie, należy dodać klub do bazy")
-            wybrana_opcja = input("Wybierz a lub b: ")
-            while wybrana_opcja != "a" and wybrana_opcja != "b":
-                wybrana_opcja = input("Wybrano niepoprawną opcję. Spróbuj ponownie: ")
-            if wybrana_opcja == "a":
-                numer_klubu2 = input("Wybierz numer klubu: ")
-                while numer_klubu2.isdigit() is False or int(numer_klubu2) < 1 or int(numer_klubu2) > j:
-                    numer_klubu2 = input("Klub o takim numerze nie istnieje, wybierz ponownie: ")
-                numer_klubu2 = int(numer_klubu2)
-            else:
+            print("Drugi klub:")
+            numer_klubu2 = sprawdzenie_indeksu_klubu(j, tab_indeksow_klubu)
+            if numer_klubu2 == 0:
                 dodanie_klubu()
-                numer_klubu2 = cursor.rowcount() + 1
-                #tututututututututututututututu !
+                numer_klubu2 = indeks_ostatniego + 1
 
             print("Podaj datę rozgrywki:")
             dzien = input("\tDzień: ")
@@ -752,11 +747,13 @@ def dodanie_rozgrywki():
                 dzien = "0" + str(dzien)
             miesiac = input("\tMiesiąc: ")
             while miesiac.isdigit() is False or int(miesiac) < 1 or int(miesiac) > 12:
-                miesiac = input("Miesiąc może być tylko liczbą całkowitą. Spróbuj ponownie: ")
+                miesiac = input("Niepoprawny format miesiąca. Spróbuj ponownie: ")
             miesiac = int(miesiac)
+            if miesiac < 10:
+                miesiac = "0" + str(miesiac)
             rok = input("\tRok: ")
             while rok.isdigit() is False or int(rok) < 999 or int(rok) > 10000:
-                rok = input("Rok może być tylko liczbą całkowitą. Spróbuj ponownie: ")
+                rok = input("Niepoprawny format roku. Spróbuj ponownie: ")
             rok = int(rok)
             godzina = input("\tGodzina: ")
             while godzina.isdigit() is False or int(godzina) < 0 or int(godzina) > 23:
@@ -783,7 +780,6 @@ def dodanie_rozgrywki():
                 id_rozgrywki = row[0]
             id_rozgrywki = id_rozgrywki + 1
 
-            print(data_rozgrywki)
             dane = (id_rozgrywki, data_rozgrywki, miejscowosc, numer_klubu1, numer_klubu2, wynik1, wynik2, wybrany_numer_ligi)
 
             sql1 = "INSERT INTO rozgrywka(id_rozgrywka, data_rozgrywki, miejscowosc, id_klub1, id_klub2, wynik_klub1, wynik_klub2, id_liga) \
@@ -791,5 +787,6 @@ def dodanie_rozgrywki():
 
             cursor.execute(sql1, dane)
             connection.commit()
+            print("Pomyślnie dodano rozgrywkę do bazy danych")
     finally:
         connection.close()

@@ -1,6 +1,5 @@
 import time
 
-
 def log():
 
     global wybor
@@ -115,3 +114,20 @@ def sprawdzenie_miejscowosci(wynik, nazwa_miejscowosci):
 
 def pauza():
     input("\nNaciśnij dowolny klawisz aby kontynuować dalsze korzystanie z aplikacji\n")
+
+
+def sprawdzenie_indeksu_klubu(zakres, tablica):
+    numer_klubu = input("Wybierz numer klubu: ")
+    trafienia = 0
+    while trafienia == 0:
+        if numer_klubu.isdigit() is True:
+            if int(numer_klubu) == 0:
+                break
+            for i in range(zakres):
+                if int(numer_klubu) == tablica[i]:
+                    trafienia = 1
+                    break
+        if numer_klubu.isdigit() is False or trafienia == 0:
+            numer_klubu = input("Nie ma takiego klubu, spróbuj ponownie: ")
+    numer_klubu = int(numer_klubu)
+    return numer_klubu
