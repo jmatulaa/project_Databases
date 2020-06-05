@@ -160,9 +160,119 @@ DELETE FROM klub WHERE klub_id=1;
 ```
 
 ## Aplikacja
-Tutaj należy opisać aplikację, która wykorzystuje zapytania SQL z poprzedniego kroku. Można, jednak nie jest to konieczne, wrzucić tutaj istotne snippety z Waszych aplikacji.
+W ostatnim etapie projektu została zaimplementowana aplikacja, która służy do wizualizacji projektu systemu. Aplikacja została napisana w języku Python w połączeniu z biblioteką pymysql, ilustruje ona interakcję użytkownika z bazą.  Wykorzystane zostały zapytania SQL, za pomocą których użytkownik (tj. przeglądający aplikacje) może wylistować informacje, które chce zobaczyć. Aplikacja pozwala na wyświetlenie 15 zapytań, natomiast niektóre funkcjonalności są ograniczone i są dostępne tylko dla zalogowanych użytkowników. W aplikacji zostały również użyte funkcje pozwalające wprowadzać lub aktualizować dane znajdujące się w bazie.
 
-## Dodatkowe uwagi
-W tej sekcji możecie zawrzeć informacje, których nie jesteście w stanie przypisać do pozostałych. Mogą to być również jakieś komentarze, wolne uwagi, itp.
+**Snippety:**
+
+Przykład funkcji napisanej w Pythonie, która wyświetla zawodników grających na danej pozycji.
+```
+def wyswietlenie_zawodnikow_klubow_na_danej_pozycji():
+connection = pymysql.connect(host='localhost',
+                             user=usr,
+                             password=usr,
+                             db='rozgrywki_pilki_noznej'
+                             )
+
+try:
+    with connection.cursor() as cursor:
+        sql1 = "SELECT DISTINCT pozycja FROM zawodnik"
+        cursor.execute(sql1)
+        result1 = cursor.fetchall()
+        pozycja = input("Podaj pozycję zawodnikow, którą chcesz wyświetlić: ")
+        i = 0
+        while i == 0:
+            for row1 in result1:
+                if pozycja == row1[0]:
+                    i = 1
+            if i != 1:
+                pozycja = input("Nie ma takiej pozycji, spróbuj ponownie: ")
+
+        sql = "SELECT klub.nazwa_klubu, zawodnik.imie_zawodnika, zawodnik.nazwisko_zawodnika \
+                FROM klub, zawodnik WHERE zawodnik.id_klub=klub.id_klub AND zawodnik.pozycja=(%s) \
+                AND zawodnik.id_klub IS NOT NULL ORDER BY klub.nazwa_klubu"
+        cursor.execute(sql, pozycja)
+        result = cursor.fetchall()
+
+        nazwy = ("Nazwa klubu", "Imie", "Nazwisko")
+        s2 = "| {0:25}| {1:20}| {2:20}|"
+        print(s2.format(nazwy[0], nazwy[1], nazwy[2]))
+        print("{:->72}".format(""))
+
+        for row in result:
+            time.sleep(0.15)
+            print(s2.format(row[0], row[1], row[2]))
+
+finally:
+    connection.close()
+```
+
+Możliowść aktualizacji klubu wygrywającego w danej lidze.
+```
+def zmiana_klubu_zwycieskiego_ligi():
+connection = pymysql.connect(host='localhost',
+                             user=usr,
+                             password=usr,
+                             db='rozgrywki_pilki_noznej'
+                             )
+
+try:
+    with connection.cursor() as cursor:
+
+        input("W której lidze zmienił się zwycięzca? Naciśnij dowolny klawisz aby wyświetlić dostępne ligi")
+        sql = "SELECT id_liga, szczebel_rozgrywkowy FROM liga"
+        cursor.execute(sql)
+        result1 = cursor.fetchall()
+        tab_indeksow_ligi = arr.array('i')
+        i = 0
+        for row in result1:
+            time.sleep(0.1)
+            tab_indeksow_ligi.append(int(row[0]))
+            print("\t", row[0], ".", row[1])
+            i = i + 1
+
+        k = 0
+        wybrany_numer_ligi = input("Podaj numer ligi: ")
+        while k == 0:
+            if wybrany_numer_ligi.isdigit() is True:
+                for j in range(i):
+                    if int(wybrany_numer_ligi) == tab_indeksow_ligi[j]:
+                        k = 1
+                        break
+            if wybrany_numer_ligi.isdigit() is False or k == 0:
+                wybrany_numer_ligi = input("Nie ma takiej ligi, spróbuj ponownie: ")
+        wybrany_numer_ligi = int(wybrany_numer_ligi)
+        sql2 = "SELECT id_klub, nazwa_klubu FROM klub ORDER BY id_klub"
+        cursor.execute(sql2)
+        result1 = cursor.fetchall()
+        tab_indeksow_klubow = arr.array('i')
+        j = 0
+        input("Naciśnij dowolny klawisz aby wyświetlić dostępne kluby")
+        for row in result1:
+            time.sleep(0.15)
+            tab_indeksow_klubow.append(int(row[0]))
+            print("\t", row[0], ".", row[1])
+            j = j + 1
+
+        print("Jesli klubu nie ma w bazie, wybierz 0 aby dodać klub")
+        numer_klubu = sprawdzenie_indeksu_klubu(j, tab_indeksow_klubow)
+        if numer_klubu == 0:
+            dodanie_klubu()
+            numer_klubu = j + 1
+
+        dodawane_wartosci = (numer_klubu, wybrany_numer_ligi)
+        sql = "UPDATE liga SET id_klub_wygrany=(%s) WHERE id_liga=(%s)"
+        cursor.execute(sql, dodawane_wartosci)
+        connection.commit()
+
+        print("Pomyślnie zmieniono klub dla danej ligi.")
+
+finally:
+    connection.close()
+```
+
+
+
+
+
 
 
